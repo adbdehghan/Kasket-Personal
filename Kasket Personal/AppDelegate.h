@@ -7,11 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LocationManager.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
+{
 
+   CLLocationManager * locationManager;
+    UIApplication *app;
+    NSTimer *timer;
+    NSTimer *timerActive;
+
+}
 @property (strong, nonatomic) UIWindow *window;
-
+@property (strong,nonatomic) LocationManager * shareModel;
 
 @end
 

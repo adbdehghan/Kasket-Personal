@@ -7,44 +7,167 @@
 //
 
 #import "AppDelegate.h"
+#import "DataDownloader.h"
+#import "Settings.h"
+#import "DBManager.h"
 
-@interface AppDelegate ()
-
+@interface AppDelegate () <CLLocationManagerDelegate>
+@property (strong, nonatomic) DataDownloader *getData;
 @end
 
 @implementation AppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    NSLog(@"didFinishLaunchingWithOptions");
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    self.shareModel = [LocationManager sharedManager];
+
     // Override point for customization after application launch.
+    //create CLLocationManager variable
+    locationManager = [[CLLocationManager alloc] init];
+    //set delegate
+    locationManager.delegate = self;
+    [locationManager requestAlwaysAuthorization];
+    
+    app = [UIApplication sharedApplication];
+    // This is the most important property to set for the manager. It ultimately determines how the manager will
+    // attempt to acquire location and thus, the amount of power that will be consumed.
+    
+    if ([locationManager respondsToSelector:@selector(setAllowsBackgroundLocationUpdates:)]) {
+        [locationManager setAllowsBackgroundLocationUpdates:YES];
+    }
+    [locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
+    [locationManager setDistanceFilter:kCLDistanceFilterNone];
+    locationManager.pausesLocationUpdatesAutomatically = NO;
+    locationManager.activityType = CLActivityTypeAutomotiveNavigation;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(accessibilityChanged)
+                                                 name:@"accessibilityChanged"
+                                               object:nil];
+    
     return YES;
+}
+
+-(void)accessibilityChanged
+{
+    if (!([DataCollector sharedInstance].accessible)) {
+        [timer invalidate];
+        [timerActive invalidate];
+        [locationManager stopUpdatingLocation];
+    }
+    else
+    {
+        if (!timerActive.isValid) {
+            timerActive = [NSTimer scheduledTimerWithTimeInterval:10.0
+                                                           target:self
+                                                         selector:@selector(startTrackingActive)
+                                                         userInfo:nil
+                                                          repeats:YES];
+        }
+    }
+    
+
+}
+
+-(void)UpdateLocation
+{
+        RequestCompleteBlock callback = ^(BOOL wasSuccessful,NSMutableDictionary *data) {
+            if (wasSuccessful) {
+                
+            }
+            else
+            {
+                
+                
+            }
+        };
+        
+        Settings *st = [[Settings alloc]init];
+        
+        st = [DBManager selectSetting][0];
+        
+        [self.getData PushLocation:st.accesstoken Lat:[NSString stringWithFormat:@"%f",self.shareModel.myLocation.latitude] Lon:[NSString stringWithFormat:@"%f",self.shareModel.myLocation.longitude] withCallback:callback];
+
+}
+
+
+-(void)applicationDidBecomeActive:(UIApplication *)application
+{
+    [timer invalidate];
+    
+    timerActive = [NSTimer scheduledTimerWithTimeInterval:10.0
+                                                   target:self
+                                                 selector:@selector(startTrackingActive)
+                                                 userInfo:nil
+                                                  repeats:YES];
 }
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+    
+    [timerActive invalidate];
+    [locationManager stopUpdatingLocation];
+    [locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
+    [locationManager setDistanceFilter:kCLDistanceFilterNone];
+    locationManager.pausesLocationUpdatesAutomatically = NO;
+    locationManager.activityType = CLActivityTypeAutomotiveNavigation;
+    [locationManager startUpdatingLocation];
 }
-
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+
+    [locationManager stopUpdatingLocation];
+    
+    __block UIBackgroundTaskIdentifier bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
+        bgTask = UIBackgroundTaskInvalid;
+    }];
+    
+    timer = [NSTimer scheduledTimerWithTimeInterval:10.0
+                                                      target:self
+                                                    selector:@selector(startTrackingBg)
+                                                    userInfo:nil
+                                                     repeats:YES];
+    
+    
+}
+
+-(void)startTrackingBg {
+    
+    if ([DataCollector sharedInstance].accessible) {
+        [locationManager startUpdatingLocation];
+        NSLog(@"App is running in background");
+        [self UpdateLocation];
+    }
 }
 
 
-- (void)applicationWillEnterForeground:(UIApplication *)application {
-    // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+-(void)startTrackingActive {
+
+    if ([DataCollector sharedInstance].accessible) {
+        [locationManager startUpdatingLocation];
+        NSLog(@"App is running ");
+        [self UpdateLocation];
+    }
 }
 
-
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+//starts automatically with locationManager
+-(void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation{
+    
+        self.shareModel.myLocation = newLocation.coordinate;
+        [locationManager stopUpdatingLocation];
+    
 }
 
-
-- (void)applicationWillTerminate:(UIApplication *)application {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+- (DataDownloader *)getData
+{
+    if (!_getData) {
+        self.getData = [[DataDownloader alloc] init];
+    }
+    
+    return _getData;
 }
 
 
