@@ -18,6 +18,11 @@
 		3ADEEBF61E9E789600CBC632 /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ADEEBF51E9E789600CBC632 /* OrderViewController.m */; };
 		643B29CF1E89601C00D1902B /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 643B29CE1E89601C00D1902B /* MainViewController.m */; };
 		6456DC6A1EA2964D008ECBF7 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6456DC691EA2964D008ECBF7 /* LocationManager.m */; };
+		6456DC711EA2D4C1008ECBF7 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6456DC701EA2D4C1008ECBF7 /* SettingsViewController.m */; };
+		6456DC741EA2D4D0008ECBF7 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6456DC731EA2D4D0008ECBF7 /* MapViewController.m */; };
+		6456DC771EA2D4DF008ECBF7 /* RankViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6456DC761EA2D4DF008ECBF7 /* RankViewController.m */; };
+		6456DC7A1EA2D505008ECBF7 /* TransactionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6456DC791EA2D505008ECBF7 /* TransactionsTableViewController.m */; };
+		6456DC7E1EA2D53A008ECBF7 /* OrderHistoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6456DC7D1EA2D53A008ECBF7 /* OrderHistoryTableViewController.m */; };
 		645FB0AB1E89CC7F008E0015 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 645FAFD71E89CC7F008E0015 /* AFHTTPRequestOperation.m */; };
 		645FB0AC1E89CC7F008E0015 /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 645FAFD91E89CC7F008E0015 /* AFHTTPRequestOperationManager.m */; };
 		645FB0AD1E89CC7F008E0015 /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 645FAFDB1E89CC7F008E0015 /* AFHTTPSessionManager.m */; };
@@ -155,6 +160,16 @@
 		643B29CE1E89601C00D1902B /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		6456DC681EA2964D008ECBF7 /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationManager.h; sourceTree = "<group>"; };
 		6456DC691EA2964D008ECBF7 /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
+		6456DC6F1EA2D4C1008ECBF7 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		6456DC701EA2D4C1008ECBF7 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		6456DC721EA2D4D0008ECBF7 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
+		6456DC731EA2D4D0008ECBF7 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
+		6456DC751EA2D4DF008ECBF7 /* RankViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankViewController.h; sourceTree = "<group>"; };
+		6456DC761EA2D4DF008ECBF7 /* RankViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RankViewController.m; sourceTree = "<group>"; };
+		6456DC781EA2D505008ECBF7 /* TransactionsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionsTableViewController.h; sourceTree = "<group>"; };
+		6456DC791EA2D505008ECBF7 /* TransactionsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionsTableViewController.m; sourceTree = "<group>"; };
+		6456DC7C1EA2D53A008ECBF7 /* OrderHistoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderHistoryTableViewController.h; sourceTree = "<group>"; };
+		6456DC7D1EA2D53A008ECBF7 /* OrderHistoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderHistoryTableViewController.m; sourceTree = "<group>"; };
 		645FAFD61E89CC7F008E0015 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
 		645FAFD71E89CC7F008E0015 /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
 		645FAFD81E89CC7F008E0015 /* AFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperationManager.h; sourceTree = "<group>"; };
@@ -382,6 +397,51 @@
 				3ADEEB631E9A5B5E00CBC632 /* InstagramActivityIndicator.m */,
 			);
 			path = InstagramActivityIndicator;
+			sourceTree = "<group>";
+		};
+		6456DC6B1EA2D4A5008ECBF7 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				6456DC6F1EA2D4C1008ECBF7 /* SettingsViewController.h */,
+				6456DC701EA2D4C1008ECBF7 /* SettingsViewController.m */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		6456DC6C1EA2D4A5008ECBF7 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				6456DC721EA2D4D0008ECBF7 /* MapViewController.h */,
+				6456DC731EA2D4D0008ECBF7 /* MapViewController.m */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		6456DC6D1EA2D4A5008ECBF7 /* Rank */ = {
+			isa = PBXGroup;
+			children = (
+				6456DC751EA2D4DF008ECBF7 /* RankViewController.h */,
+				6456DC761EA2D4DF008ECBF7 /* RankViewController.m */,
+			);
+			path = Rank;
+			sourceTree = "<group>";
+		};
+		6456DC6E1EA2D4A5008ECBF7 /* Transactions */ = {
+			isa = PBXGroup;
+			children = (
+				6456DC781EA2D505008ECBF7 /* TransactionsTableViewController.h */,
+				6456DC791EA2D505008ECBF7 /* TransactionsTableViewController.m */,
+			);
+			path = Transactions;
+			sourceTree = "<group>";
+		};
+		6456DC7B1EA2D52A008ECBF7 /* Order History */ = {
+			isa = PBXGroup;
+			children = (
+				6456DC7C1EA2D53A008ECBF7 /* OrderHistoryTableViewController.h */,
+				6456DC7D1EA2D53A008ECBF7 /* OrderHistoryTableViewController.m */,
+			);
+			path = "Order History";
 			sourceTree = "<group>";
 		};
 		645FAFD41E89CC7F008E0015 /* Extensions */ = {
@@ -771,6 +831,11 @@
 				645FAFD41E89CC7F008E0015 /* Extensions */,
 				64A25C4F1E89EB4A005DE1F7 /* Login */,
 				64A25C561E89F8B2005DE1F7 /* Orders */,
+				6456DC6B1EA2D4A5008ECBF7 /* Settings */,
+				6456DC6C1EA2D4A5008ECBF7 /* Map */,
+				6456DC6D1EA2D4A5008ECBF7 /* Rank */,
+				6456DC6E1EA2D4A5008ECBF7 /* Transactions */,
+				6456DC7B1EA2D52A008ECBF7 /* Order History */,
 				64B7A96F1E6DFF7E00DF99DD /* AppDelegate.h */,
 				64B7A9701E6DFF7E00DF99DD /* AppDelegate.m */,
 				643B29CD1E89601C00D1902B /* MainViewController.h */,
@@ -977,6 +1042,7 @@
 				64A25C541E89EB4A005DE1F7 /* LoginViewController.m in Sources */,
 				645FB1141E89CC7F008E0015 /* UIImageView+HighlightedWebCache.m in Sources */,
 				645FB0F51E89CC7F008E0015 /* NSObject+SBJSON.m in Sources */,
+				6456DC7E1EA2D53A008ECBF7 /* OrderHistoryTableViewController.m in Sources */,
 				645FB10D1E89CC7F008E0015 /* SDWebImageDownloaderOperation.m in Sources */,
 				645FB0B91E89CC7F008E0015 /* Transaction.m in Sources */,
 				645FB0B51E89CC7F008E0015 /* MapCharacter.m in Sources */,
@@ -990,6 +1056,7 @@
 				645FB0C91E89CC7F008E0015 /* UIWindow+YzdHUD.m in Sources */,
 				645FB0AC1E89CC7F008E0015 /* AFHTTPRequestOperationManager.m in Sources */,
 				3ABEF7F71E9BD19500551B2D /* Order.m in Sources */,
+				6456DC771EA2D4DF008ECBF7 /* RankViewController.m in Sources */,
 				645FB0BD1E89CC7F008E0015 /* Source.m in Sources */,
 				645FB11B1E89CC7F008E0015 /* HomeTableViewCell.m in Sources */,
 				645FB0AE1E89CC7F008E0015 /* AFNetworkReachabilityManager.m in Sources */,
@@ -1048,10 +1115,13 @@
 				645FB1111E89CC7F008E0015 /* UIImage+GIF.m in Sources */,
 				645FB0F81E89CC7F008E0015 /* SBJsonParser.m in Sources */,
 				645FB1021E89CC7F008E0015 /* AngleGradientLayer.m in Sources */,
+				6456DC7A1EA2D505008ECBF7 /* TransactionsTableViewController.m in Sources */,
 				6456DC6A1EA2964D008ECBF7 /* LocationManager.m in Sources */,
 				645FB0B61E89CC7F008E0015 /* Notification.m in Sources */,
 				643B29CF1E89601C00D1902B /* MainViewController.m in Sources */,
+				6456DC711EA2D4C1008ECBF7 /* SettingsViewController.m in Sources */,
 				645FB1001E89CC7F008E0015 /* MultiplePulsingHaloLayer.m in Sources */,
+				6456DC741EA2D4D0008ECBF7 /* MapViewController.m in Sources */,
 				64B7A96E1E6DFF7E00DF99DD /* main.m in Sources */,
 				64A25C551E89EB4A005DE1F7 /* SplashViewController.m in Sources */,
 				645FB0BC1E89CC7F008E0015 /* Settings.m in Sources */,

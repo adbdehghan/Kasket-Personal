@@ -10,6 +10,7 @@
 #import "DataDownloader.h"
 #import "Settings.h"
 #import "DBManager.h"
+@import GoogleMaps;
 
 @interface AppDelegate () <CLLocationManagerDelegate>
 @property (strong, nonatomic) DataDownloader *getData;
@@ -20,6 +21,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+    [GMSServices provideAPIKey:@"AIzaSyCvhTlttp-AAadtH5Azgjg8lZBhWKVJF1o"];
     NSLog(@"didFinishLaunchingWithOptions");
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     self.shareModel = [LocationManager sharedManager];

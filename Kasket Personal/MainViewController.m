@@ -175,7 +175,7 @@
             
             break;
         case 5:
-            
+            [self performSegueWithIdentifier:@"map" sender:self];
             break;
             
         default:
