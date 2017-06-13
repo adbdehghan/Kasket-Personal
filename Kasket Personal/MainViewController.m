@@ -35,7 +35,11 @@
 
 - (void)setup
 {
-    self.accountLabel.text = [NSString stringWithFormat:@"%@ تومان",[MapCharacter MapCharacter:[DataCollector sharedInstance].account]];
+    NSNumberFormatter *formatter = [NSNumberFormatter new];
+    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    NSString *formatted = [formatter stringFromNumber:[NSNumber numberWithInteger:[[DataCollector sharedInstance].account integerValue]]];
+    
+    self.accountLabel.text = [NSString stringWithFormat:@"%@ تومان",[MapCharacter MapCharacter:formatted]];
     [self setNeedsStatusBarAppearanceUpdate];
     self.accessibilityContainer.layer.shadowColor = [UIColor darkGrayColor].CGColor;
     self.accessibilityContainer.layer.shadowRadius = 5;

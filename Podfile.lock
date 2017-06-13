@@ -9,6 +9,7 @@ PODS:
   - GoogleMaps/Maps (2.0.1):
     - GoogleMaps/Base (= 2.0.1)
   - IQKeyboardManager (4.0.8)
+  - OHPDFImage (3.2.1)
 
 DEPENDENCIES:
   - AnimatedGIFImageSerialization
@@ -17,6 +18,7 @@ DEPENDENCIES:
   - FCAlertView
   - GoogleMaps (~> 2.0.0)
   - IQKeyboardManager
+  - OHPDFImage
 
 SPEC CHECKSUMS:
   AnimatedGIFImageSerialization: b0f0cfe71eac1ee45a3d57ae533c23b8e6f29501
@@ -25,7 +27,8 @@ SPEC CHECKSUMS:
   FCAlertView: 60a6e16609d1458e16752f1918c2c43644c390ea
   GoogleMaps: f09da64fc987c1aa29394567c3cab5a3df83c402
   IQKeyboardManager: 1a8189fa153bf09044355ee0ad36826f6767e7f7
+  OHPDFImage: b5ad5d7d99f4fbadaa8740cc3d1009f1a0b34ef0
 
-PODFILE CHECKSUM: 3a1fb318b070528ae64ad6186998fb98bb08c9a2
+PODFILE CHECKSUM: d935c8f1e3f931ebec24f67f80e1fd04d3831464
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.2.1

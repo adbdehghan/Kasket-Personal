@@ -264,6 +264,7 @@
 {
     selectedOrder = (Order*)([tableItems objectAtIndex:indexPath.row]);
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self performSegueWithIdentifier:@"order" sender:self];
 }
 
 
@@ -279,7 +280,7 @@
     [self.view addSubview:containerView];
     
     RadialGradient *radialView = [[RadialGradient alloc] initWithFrame:containerView.frame];
-    radialView.backgroundColor = [UIColor colorWithRed:0 green:176/255.f blue:252/255.f alpha:.9];
+    radialView.backgroundColor = [UIColor colorWithRed:118/255.f green:106/255.f blue:247/255.f alpha:.9];
     [containerView insertSubview:radialView atIndex:0];
     
     indicator = [[InstagramActivityIndicator alloc]initWithFrame:CGRectMake(0, 0, containerView.frame.size.width - 75, containerView.frame.size.width - 75)];
