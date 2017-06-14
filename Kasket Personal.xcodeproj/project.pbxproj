@@ -8,7 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		0F88AD0445D2B365ABAF4EED /* libPods-Kasket Personal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE6D968CB7D01F57551326BB /* libPods-Kasket Personal.a */; };
+		3A01AC7F1EF1A597002A492A /* status.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A01AC7E1EF1A597002A492A /* status.png */; };
+		3A01AC811EF1A5E6002A492A /* money.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A01AC801EF1A5E6002A492A /* money.png */; };
+		3A0D97C81EF1ACB600B74834 /* toggle.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A0D97C71EF1ACB600B74834 /* toggle.png */; };
 		3A5252F01EF0925D00350DCC /* sourcemarker.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3A5252EF1EF0925D00350DCC /* sourcemarker.pdf */; };
+		3A901C8B1EF169C100ED290F /* credit-card.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A901C8A1EF169C100ED290F /* credit-card.png */; };
 		3ABEF7F71E9BD19500551B2D /* Order.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ABEF7F61E9BD19500551B2D /* Order.m */; };
 		3ADEEB601E9A589000CBC632 /* RadialGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ADEEB5F1E9A589000CBC632 /* RadialGradient.m */; };
 		3ADEEB641E9A5B5E00CBC632 /* InstagramActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ADEEB631E9A5B5E00CBC632 /* InstagramActivityIndicator.m */; };
@@ -145,7 +149,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3A01AC7E1EF1A597002A492A /* status.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = status.png; sourceTree = "<group>"; };
+		3A01AC801EF1A5E6002A492A /* money.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money.png; sourceTree = "<group>"; };
+		3A0D97C71EF1ACB600B74834 /* toggle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toggle.png; sourceTree = "<group>"; };
 		3A5252EF1EF0925D00350DCC /* sourcemarker.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = sourcemarker.pdf; sourceTree = "<group>"; };
+		3A901C8A1EF169C100ED290F /* credit-card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "credit-card.png"; sourceTree = "<group>"; };
 		3ABEF7F51E9BD19500551B2D /* Order.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Order.h; sourceTree = "<group>"; };
 		3ABEF7F61E9BD19500551B2D /* Order.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Order.m; sourceTree = "<group>"; };
 		3ADEEB5E1E9A589000CBC632 /* RadialGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadialGradient.h; sourceTree = "<group>"; };
@@ -587,6 +595,10 @@
 		645FB01D1E89CC7F008E0015 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				3A0D97C71EF1ACB600B74834 /* toggle.png */,
+				3A01AC801EF1A5E6002A492A /* money.png */,
+				3A01AC7E1EF1A597002A492A /* status.png */,
+				3A901C8A1EF169C100ED290F /* credit-card.png */,
 				3A5252EF1EF0925D00350DCC /* sourcemarker.pdf */,
 				3ADEEBF21E9E6E4E00CBC632 /* way.png */,
 				3ADEEBAD1E9E6CB500CBC632 /* box.png */,
@@ -940,6 +952,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A901C8B1EF169C100ED290F /* credit-card.png in Resources */,
 				645FB0F11E89CC7F008E0015 /* teh.png in Resources */,
 				64A25C4B1E89E06C005DE1F7 /* settings.png in Resources */,
 				645FB0F31E89CC7F008E0015 /* user-shape.png in Resources */,
@@ -967,12 +980,14 @@
 				645FB1261E89D8B6008E0015 /* moneyBag.png in Resources */,
 				64A25C4C1E89E06C005DE1F7 /* orders.png in Resources */,
 				3ADEEB6B1E9E692E00CBC632 /* sourcePin.png in Resources */,
+				3A0D97C81EF1ACB600B74834 /* toggle.png in Resources */,
 				645FB0C41E89CC7F008E0015 /* IRANSans_Bold.ttf in Resources */,
 				64B7A9791E6DFF7E00DF99DD /* Assets.xcassets in Resources */,
 				645FB0D81E89CC7F008E0015 /* close.png in Resources */,
 				645FB0DD1E89CC7F008E0015 /* giftcode.png in Resources */,
 				645FB0D31E89CC7F008E0015 /* avatar.pdf in Resources */,
 				64B7A9771E6DFF7E00DF99DD /* Main.storyboard in Resources */,
+				3A01AC811EF1A5E6002A492A /* money.png in Resources */,
 				645FB0C51E89CC7F008E0015 /* IRANSans_Light.ttf in Resources */,
 				645FB0DF1E89CC7F008E0015 /* logout.png in Resources */,
 				645FB0E61E89CC7F008E0015 /* nevertoolate@2x.gif in Resources */,
@@ -983,6 +998,7 @@
 				3ADEEBF31E9E6E4E00CBC632 /* way.png in Resources */,
 				645FB0DB1E89CC7F008E0015 /* destinationmarker.pdf in Resources */,
 				645FB0D41E89CC7F008E0015 /* back.pdf in Resources */,
+				3A01AC7F1EF1A597002A492A /* status.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

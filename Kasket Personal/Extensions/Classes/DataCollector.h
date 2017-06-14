@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Order.h"
 
 @interface DataCollector : NSObject
 +(DataCollector *)sharedInstance;
@@ -23,5 +24,5 @@
 @property (nonatomic,strong) NSString *accountnumber;
 @property (nonatomic,strong) NSString *vehicle;
 @property (nonatomic,strong) NSString *vehicleplate;
-
+@property (nonatomic,strong) Order *order;
 @end

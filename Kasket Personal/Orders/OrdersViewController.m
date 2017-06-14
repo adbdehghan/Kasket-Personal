@@ -182,7 +182,6 @@
 
 -(void)viewDidDisappear:(BOOL)animated
 {
-
     self.getData = nil;
     [timer invalidate];
 }
@@ -262,8 +261,10 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    selectedOrder = (Order*)([tableItems objectAtIndex:indexPath.row]);
+    [DataCollector sharedInstance].order = (Order*)([tableItems objectAtIndex:indexPath.row]);
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    self.getData = nil;
+    [timer invalidate];
     [self performSegueWithIdentifier:@"order" sender:self];
 }
 
@@ -381,9 +382,6 @@
 #pragma mark - Navigation
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    OrderViewController *destination = [segue destinationViewController];
-    destination.order = selectedOrder;
-    
     
 }
 

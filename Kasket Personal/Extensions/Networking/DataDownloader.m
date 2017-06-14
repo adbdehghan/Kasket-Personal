@@ -84,7 +84,7 @@ NSMutableDictionary *receivedData;
 {
     receivedData = [[NSMutableDictionary alloc]init];
     
-    NSString *sample =[NSString stringWithFormat: @"%s/api/user/Credit",URLaddress];
+    NSString *sample =[NSString stringWithFormat: @"%s/api/employee/Credit",URLaddress];
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
@@ -104,12 +104,62 @@ NSMutableDictionary *receivedData;
     }];
 }
 
+- (void)AcceptOrder:(NSString*)token OrderId:(NSString*)orderid OrderAction:(NSString*)orderAction withCallback:(RequestCompleteBlock)callback
+{
+    receivedData = [[NSMutableDictionary alloc]init];
+    
+    NSString *sample =[NSString stringWithFormat: @"%s/api/employee/SetOrderAction",URLaddress];
+    NSDictionary *parameters = @{@"orderId": orderid,
+                                 @"action": orderAction};
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    manager.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments];
+    
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@",token] forHTTPHeaderField:@"Authorization"];
+    
+    [manager GET:sample parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSLog(@"Success %@", responseObject);
+        
+        callback(YES,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callback(NO,nil);
+        NSLog(@"Failure %@, %@", error, operation.responseString);
+    }];
+}
+
+- (void)GetOrder:(NSString*)token OrderId:(NSString*)orderid withCallback:(RequestCompleteBlock)callback
+{
+    receivedData = [[NSMutableDictionary alloc]init];
+    
+    NSString *sample =[NSString stringWithFormat: @"%s/api/employee/GetOrder",URLaddress];
+    NSDictionary *parameters = @{@"Id": orderid};
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    manager.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments];
+    
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@",token] forHTTPHeaderField:@"Authorization"];
+    
+    [manager GET:sample parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSLog(@"Success %@", responseObject);
+        
+        callback(YES,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callback(NO,nil);
+        NSLog(@"Failure %@, %@", error, operation.responseString);
+    }];
+}
 
 - (void)OffCode:(NSString*)token Code:(NSString*)code withCallback:(RequestCompleteBlock)callback
 {
     receivedData = [[NSMutableDictionary alloc]init];
     
-    NSString *sample =[NSString stringWithFormat: @"%s/api/register/OffCode",URLaddress];
+    NSString *sample =[NSString stringWithFormat: @"%s/api/user/OffCode",URLaddress];
     
     NSDictionary *parameters = @{@"code": code};
     

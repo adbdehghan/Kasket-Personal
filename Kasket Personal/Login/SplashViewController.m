@@ -11,12 +11,13 @@
 #import "Settings.h"
 #import "DataDownloader.h"
 #import "DataCollector.h"
-
+#import "OrderViewController.h"
+#import "Order.h"
 
 @interface SplashViewController ()
 {
- NSString *version;
-    
+    NSString *version;
+    Order *order;
 }
 
 @property (strong, nonatomic) DataDownloader *getData;
@@ -76,7 +77,30 @@
                             else
                             {
                                 [DataCollector sharedInstance].haveCurrentWork = YES;
-                                [self performSegueWithIdentifier:@"orders" sender:self];
+                                
+                                
+                                NSDictionary *item = [data valueForKey:@"currentWork"];
+                                order = [[Order alloc]init];
+                                order.orderId = [item valueForKey:@"id"];
+                                order.orderTime =[item valueForKey:@"orderTime"];
+                                order.orderType =[item valueForKey:@"orderType"];
+                                order.price = [item valueForKey:@"price"];
+                                order.haveReturn =[item valueForKey:@"roundtrip"];
+                                order.sourceAddress =[item valueForKey:@"sourceAddress"];
+                                order.destinationAddress =[item valueForKey:@"destinationAddress"];
+                                order.status =[item valueForKey:@"status"];
+                                order.paymentStatus =[NSString stringWithFormat:@"%@",[item valueForKey:@"paymentstatus"]];
+                                order.payInDestination = [NSString stringWithFormat:@"%@",[item valueForKey:@"payinDestination"]];
+                                NSDictionary *sourceLocation = [item valueForKey:@"sourcelocation"];
+                                order.sourceLat = [sourceLocation valueForKey:@"latitude"];
+                                order.sourceLon = [sourceLocation valueForKey:@"longitude"];
+                                
+                                NSDictionary *destLocation = [item valueForKey:@"destinationlocation"];
+                                order.destinationLat = [destLocation valueForKey:@"latitude"];
+                                order.destinationLon = [destLocation valueForKey:@"longitude"];
+                                
+                                [DataCollector sharedInstance].order = order; 
+                                [self performSegueWithIdentifier:@"order" sender:self];
                             }
                             [self FillDataCollector:data];
                             
@@ -182,15 +206,5 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
 
 @end

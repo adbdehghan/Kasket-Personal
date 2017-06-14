@@ -12,5 +12,6 @@
 @interface OrderViewController : UIViewController
 @property(nonatomic,weak) IBOutlet UIView *mapView;
 @property(nonatomic,weak) IBOutlet UIView *bottomView;
+@property(nonatomic,weak) IBOutlet UIView *acceptedView;
 @property(nonatomic,strong) Order *order;
 @end

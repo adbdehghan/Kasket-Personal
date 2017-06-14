@@ -9,20 +9,33 @@
 #import "OrderViewController.h"
 #import "MapCharacter.h"
 #import "UIImage+OHPDF.h"
+#import "DataDownloader.h"
+#import "Settings.h"
+#import "DBManager.h"
+#import "FCAlertView.h"
+#import "UIWindow+YzdHUD.h"
 @import GoogleMaps;
 
 @interface OrderViewController ()<GMSMapViewDelegate>
 {
     IBOutlet UIButton *acceptButton;
+    IBOutlet UIButton *arrivedAndDoneButton;
+    IBOutlet UIButton *payedByCashButton;
+    IBOutlet UIButton *cancelButton;
+    IBOutlet UIButton *toggleButton;
     IBOutlet UILabel *sourceAddressLabel;
     IBOutlet UILabel *destinationAddressLabel;
     IBOutlet UILabel *haveReturnLabel;
-    UIButton *arriveButton;
-    UIButton *cancelButton;
+    IBOutlet UILabel *haveReturnLabelAccepted;
+    IBOutlet UILabel *paymentLabel;
+    IBOutlet UILabel *priceLabel;
+    NSTimer *timer;
     UIView *introView;
-    UIView *acceptedView;
     GMSMapView *mapView;
+    BOOL isShown;
 }
+@property (strong, nonatomic) DataDownloader *getData;
+
 @end
 
 @implementation OrderViewController
@@ -31,13 +44,227 @@
     [super viewDidLoad];
     [self CustomizeNavigationTitle];
     [self FillUIComponents];
+    [self CheckState];
     [self CreateShadow];
     [self setupMapView];
+    [self AddLongPressGesture];
+    [self StyleButtons];
+}
+
+-(void)StyleButtons
+{
+    payedByCashButton.layer.cornerRadius = 5;
+    [self.mapView bringSubviewToFront:toggleButton];
+}
+
+-(void)CheckState
+{
+    if ( [DataCollector sharedInstance].haveCurrentWork) {
+        _bottomView.hidden = YES;
+        self.acceptedView.hidden = NO;
+        [self GetOrder];
+    }
+}
+
+-(void)AddLongPressGesture{
     
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+    [acceptButton addGestureRecognizer:longPress];
+    
+    UILongPressGestureRecognizer *arrivedAndDonelongPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(ArrivedAndDonelongPress:)];
+    [arrivedAndDoneButton addGestureRecognizer:arrivedAndDonelongPress];
+    
+    UILongPressGestureRecognizer *cancellongPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(CancelLongPress:)];
+    [cancelButton addGestureRecognizer:cancellongPress];
+    
+    UILongPressGestureRecognizer *payedLongPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(PayedLongPress:)];
+    [payedByCashButton addGestureRecognizer:payedLongPress];
+}
+
+- (void)longPress:(UILongPressGestureRecognizer*)gesture {
+    if ( gesture.state == UIGestureRecognizerStateBegan ) {
+        [self AcceptOrder:@"0"];
+    }
+}
+
+- (void)ArrivedAndDonelongPress:(UILongPressGestureRecognizer*)gesture {
+    if ( gesture.state == UIGestureRecognizerStateBegan ) {
+        NSString *status =[NSString stringWithFormat:@"%@", _order.status];
+        if ([status isEqualToString:@"2"]) {
+            [self AcceptOrder:@"1"];
+        }
+        else if ([status isEqualToString:@"3"]) {
+            [self AcceptOrder:@"2"];
+        }
+        else if ([status isEqualToString:@"4"]) {
+            [self AcceptOrder:@"3"];
+        }
+    }
+}
+
+- (void)CancelLongPress:(UILongPressGestureRecognizer*)gesture {
+    if ( gesture.state == UIGestureRecognizerStateBegan ) {
+        [self AcceptOrder:@"4"];
+    }
+}
+
+- (void)PayedLongPress:(UILongPressGestureRecognizer*)gesture {
+    if ( gesture.state == UIGestureRecognizerStateBegan ) {
+        [self AcceptOrder:@"5"];
+    }
+}
+
+- (IBAction)AcceptTouched:(id)sender {
+    
+    FCAlertView *alert = [[FCAlertView alloc] init];
+    [alert makeAlertTypeCaution];
+    [alert showAlertInView:self
+                 withTitle:nil
+              withSubtitle:@"لطفا دکمه را نگهدارید"
+           withCustomImage:[UIImage imageNamed:@"alert.png"]
+       withDoneButtonTitle:@"تایید"
+                andButtons:nil];
+}
+
+-(void)AcceptOrder:(NSString*)action
+{
+    RequestCompleteBlock callback = ^(BOOL wasSuccessful,NSMutableDictionary *data) {
+        [self.view.window showHUDWithText:nil Type:ShowDismiss Enabled:YES];
+        if (wasSuccessful) {
+            
+            NSString *status =[NSString stringWithFormat:@"%@",[data valueForKey:@"status"] ];
+            if ([status isEqualToString:@"0"]) {
+                FCAlertView *alert = [[FCAlertView alloc] init];
+                [alert makeAlertTypeCaution];
+                [alert showAlertInView:self
+                             withTitle:nil
+                          withSubtitle:[data valueForKey:@"message"]
+                       withCustomImage:[UIImage imageNamed:@"alert.png"]
+                   withDoneButtonTitle:@"تایید"
+                            andButtons:nil];
+            }
+            else if ([status isEqualToString:@"2"])
+            {
+                _acceptedView.hidden = NO;
+                _bottomView.hidden = YES;
+                [DataCollector sharedInstance].order.orderId =[NSString stringWithFormat:@"%@",[data valueForKey:@"data"]];
+                [self DisableBackButton];
+                [self GetOrder];
+            }
+            else if ([status isEqualToString:@"3"])
+            {
+                [arrivedAndDoneButton setTitle:@"رسیدن به گیرنده" forState:UIControlStateNormal];
+            }
+            else if ([status isEqualToString:@"4"])
+            {
+                [arrivedAndDoneButton setTitle:@"پایان عملیات" forState:UIControlStateNormal];
+                FCAlertView *alert = [[FCAlertView alloc] init];
+                [alert makeAlertTypeCaution];
+                [alert showAlertInView:self
+                             withTitle:nil
+                          withSubtitle:[data valueForKey:@"message"]
+                       withCustomImage:[UIImage imageNamed:@"alert.png"]
+                   withDoneButtonTitle:@"تایید"
+                            andButtons:nil];
+            }
+            else if ([status isEqualToString:@"6"])
+            {
+//                FCAlertView *alert = [[FCAlertView alloc] init];
+//                [alert makeAlertTypeCaution];
+//                [alert showAlertInView:self
+//                             withTitle:nil
+//                          withSubtitle:@"درخواست لغو شد"
+//                       withCustomImage:[UIImage imageNamed:@"alert.png"]
+//                   withDoneButtonTitle:@"تایید"
+//                            andButtons:nil];
+                [timer invalidate];
+                 self.getData = nil;
+                [DataCollector sharedInstance].haveCurrentWork = NO;
+                [DataCollector sharedInstance].order = nil;
+                [self performSegueWithIdentifier:@"tomain" sender:self];
+            }
+            
+        }
+        else
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"👻"
+                                                            message:@"لطفا ارتباط خود با اینترنت را بررسی نمایید."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"خب"
+                                                  otherButtonTitles:nil];
+            [alert show];
+        }
+    };
+    
+    Settings *st = [[Settings alloc]init];
+    
+    st = [DBManager selectSetting][0];
+    [self.view.window showHUDWithText:@"لطفا صبر کنید" Type:ShowLoading Enabled:YES];
+    [self.getData AcceptOrder:st.accesstoken OrderId:_order.orderId OrderAction:action withCallback:callback];
+    
+}
+
+
+-(void)GetOrder
+{
+    RequestCompleteBlock callback = ^(BOOL wasSuccessful,NSMutableDictionary *data) {
+        
+        if (wasSuccessful) {
+            
+            [self ParseOrderData:data];
+            
+            timer =  [NSTimer scheduledTimerWithTimeInterval:3.f
+                                                      target:self
+                                                    selector:@selector(GetOrder)
+                                                    userInfo:nil
+                                                     repeats:NO];
+            
+        }
+        else
+        {
+            
+        }
+    };
+    
+    Settings *st = [[Settings alloc]init];
+    
+    st = [DBManager selectSetting][0];
+    [self.getData GetOrder:st.accesstoken OrderId:_order.orderId  withCallback:callback];
+    
+}
+
+-(void)ParseOrderData:(NSMutableDictionary*)item
+{
+    _order = [[Order alloc]init];
+    _order.orderId = [item valueForKey:@"id"];
+    _order.status = [item valueForKey:@"status"];
+    _order.orderTime =[item valueForKey:@"orderTime"];
+    _order.orderType =[item valueForKey:@"orderType"];
+    _order.price = [item valueForKey:@"price"];
+    _order.haveReturn =[item valueForKey:@"roundtrip"];
+    _order.sourceAddress =[item valueForKey:@"sourceAddress"];
+    _order.destinationAddress =[item valueForKey:@"destinationAddress"];
+    _order.status =[item valueForKey:@"status"];
+    _order.paymentStatus =[NSString stringWithFormat:@"%@",[item valueForKey:@"paymentstatus"]];
+    _order.payInDestination = [NSString stringWithFormat:@"%@",[item valueForKey:@"payinDestination"]];
+    NSDictionary *sourceLocation = [item valueForKey:@"sourcelocation"];
+    _order.sourceLat = [sourceLocation valueForKey:@"latitude"];
+    _order.sourceLon = [sourceLocation valueForKey:@"longitude"];
+    
+    NSDictionary *destLocation = [item valueForKey:@"destinationlocation"];
+    _order.destinationLat = [destLocation valueForKey:@"latitude"];
+    _order.destinationLon = [destLocation valueForKey:@"longitude"];
+    
+    if ([_order.paymentStatus isEqualToString:@"1"]) {
+        paymentLabel.text = @"هزینه پرداخت شده لطفا وجه نقد دریافت نکنید";
+    }
 }
 
 -(void)FillUIComponents
 {
+    if (_order == nil) {
+        _order = [DataCollector sharedInstance].order;
+    }
     NSNumberFormatter *formatter = [NSNumberFormatter new];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
     NSString *formatted = [formatter stringFromNumber:[NSNumber numberWithInteger:[_order.price integerValue]]];
@@ -46,6 +273,24 @@
     sourceAddressLabel.text = _order.sourceAddress;
     destinationAddressLabel.text = _order.destinationAddress;
     haveReturnLabel.text =  [[NSString stringWithFormat:@"%@",_order.haveReturn] isEqualToString:@"0"] ? @"یک طرفه" :@"دو طرفه";
+    haveReturnLabelAccepted.text = [[NSString stringWithFormat:@"%@",_order.haveReturn] isEqualToString:@"0"] ? @"یک طرفه" :@"دو طرفه";
+    priceLabel.text = [NSString stringWithFormat:@"%@ تومان",[MapCharacter MapCharacter:formatted]];
+     NSString *status =[NSString stringWithFormat:@"%@", _order.status];
+    
+    if ([status isEqualToString:@"3"]) {
+        [arrivedAndDoneButton setTitle:@"رسیدن به گیرنده" forState:UIControlStateNormal];
+    }
+    else if ([status isEqualToString:@"4"]) {
+        [arrivedAndDoneButton setTitle:@"پایان عملیات" forState:UIControlStateNormal];
+    }
+    
+    if ([_order.paymentStatus isEqualToString:@"1"]) {
+        paymentLabel.text = @"هزینه پرداخت شده لطفا وجه نقد دریافت نکنید";
+    }
+    if ([_order.payInDestination isEqualToString:@"1"]) {
+        paymentLabel.text = @"هزینه را از دریافت کننده بگیرید";
+    }
+    
     
 }
 
@@ -126,13 +371,38 @@
     
     self.navigationItem.titleView=label;
     
-    // Get the previous view controller
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    // Create a UIBarButtonItem
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(popViewController)];
-    // Associate the barButtonItem to the previous view
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    if ([DataCollector sharedInstance].haveCurrentWork) {
+        // Get the previous view controller
+        UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 1];
+        // Create a UIBarButtonItem
+        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(popViewController)];
+        // Associate the barButtonItem to the previous view
+        [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    }
+    else
+    {
+        // Get the previous view controller
+        UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+        // Create a UIBarButtonItem
+        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(popViewController)];
+        // Associate the barButtonItem to the previous view
+        [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    }
     
+}
+
+-(void)DisableBackButton
+{
+   [self.navigationItem setHidesBackButton:YES];
+}
+
+- (DataDownloader *)getData
+{
+    if (!_getData) {
+        self.getData = [[DataDownloader alloc] init];
+    }
+    
+    return _getData;
 }
 
 
