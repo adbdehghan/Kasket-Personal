@@ -32,7 +32,7 @@
 #pragma mark - NinaParaArrays
 - (NSArray *)ninaTitleArray {
     return @[
-             @"تراکنش ها",
+             @"تراکنش های سفارشات",
              @"تراکنش های شخصی"
              ];
 }
