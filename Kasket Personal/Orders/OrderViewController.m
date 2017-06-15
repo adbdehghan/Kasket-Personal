@@ -23,16 +23,26 @@
     IBOutlet UIButton *payedByCashButton;
     IBOutlet UIButton *cancelButton;
     IBOutlet UIButton *toggleButton;
+    IBOutlet UIButton *sourceNumberButton;
+    IBOutlet UIButton *destinationNumberButton;
     IBOutlet UILabel *sourceAddressLabel;
     IBOutlet UILabel *destinationAddressLabel;
+    IBOutlet UILabel *sourceAddressLabelAccepted;
+    IBOutlet UILabel *destinationAddressLabelAccepted;
     IBOutlet UILabel *haveReturnLabel;
     IBOutlet UILabel *haveReturnLabelAccepted;
     IBOutlet UILabel *paymentLabel;
     IBOutlet UILabel *priceLabel;
+    IBOutlet UILabel *sourceFullNameLabel;
+    IBOutlet UILabel *destinationFullNameLabel;
+    IBOutlet UILabel *sourceAddressDetailLabel;
+    IBOutlet UILabel *destinationAddressDetailLabel;
+    IBOutlet UIView *toggleView;
+    
     NSTimer *timer;
-    UIView *introView;
     GMSMapView *mapView;
     BOOL isShown;
+    BOOL isAlertShown;
 }
 @property (strong, nonatomic) DataDownloader *getData;
 
@@ -51,10 +61,31 @@
     [self StyleButtons];
 }
 
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:YES];
+    self.getData = nil;
+    [timer invalidate];
+}
+
+
 -(void)StyleButtons
 {
     payedByCashButton.layer.cornerRadius = 5;
-    [self.mapView bringSubviewToFront:toggleButton];
+    
+}
+
+- (IBAction)ToggleEvent:(id)sender
+{
+    if (!isShown) {
+        isShown = YES;
+        toggleView.hidden = NO;
+    }
+    else
+    {
+        isShown = NO;
+        toggleView.hidden = YES;
+    }
 }
 
 -(void)CheckState
@@ -62,8 +93,20 @@
     if ( [DataCollector sharedInstance].haveCurrentWork) {
         _bottomView.hidden = YES;
         self.acceptedView.hidden = NO;
+        toggleButton.hidden = NO;
         [self GetOrder];
     }
+}
+
+- (IBAction)CallSourceNumber:(id)sender
+{
+   [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@",_order.phoneNumber]]];
+}
+
+- (IBAction)CallDestinationNumber:(id)sender
+{
+    
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@",_order.destinationPhoneNumber]]];
 }
 
 -(void)AddLongPressGesture{
@@ -147,6 +190,7 @@
             {
                 _acceptedView.hidden = NO;
                 _bottomView.hidden = YES;
+                toggleButton.hidden = NO;
                 [DataCollector sharedInstance].order.orderId =[NSString stringWithFormat:@"%@",[data valueForKey:@"data"]];
                 [self DisableBackButton];
                 [self GetOrder];
@@ -245,18 +289,61 @@
     _order.sourceAddress =[item valueForKey:@"sourceAddress"];
     _order.destinationAddress =[item valueForKey:@"destinationAddress"];
     _order.status =[item valueForKey:@"status"];
+    _order.sourceBell =[item valueForKey:@"sourceBell"];
+    _order.sourcePlate =[item valueForKey:@"sourceNum"];
+    _order.destinationBell =[item valueForKey:@"destinationBell"];
+    _order.destinationPlate =[item valueForKey:@"destinationNum"];
+    _order.destinationFullName = [item valueForKey:@"destinationFullName"];
+    _order.fullName = [item valueForKey:@"fullName"];
     _order.paymentStatus =[NSString stringWithFormat:@"%@",[item valueForKey:@"paymentstatus"]];
     _order.payInDestination = [NSString stringWithFormat:@"%@",[item valueForKey:@"payinDestination"]];
     NSDictionary *sourceLocation = [item valueForKey:@"sourcelocation"];
     _order.sourceLat = [sourceLocation valueForKey:@"latitude"];
     _order.sourceLon = [sourceLocation valueForKey:@"longitude"];
-    
+    _order.phoneNumber = [item valueForKey:@"phonenumber"];
+    _order.destinationPhoneNumber = [item valueForKey:@"destinationPhoneNumber"];
     NSDictionary *destLocation = [item valueForKey:@"destinationlocation"];
     _order.destinationLat = [destLocation valueForKey:@"latitude"];
     _order.destinationLon = [destLocation valueForKey:@"longitude"];
     
     if ([_order.paymentStatus isEqualToString:@"1"]) {
         paymentLabel.text = @"هزینه پرداخت شده لطفا وجه نقد دریافت نکنید";
+    }
+    
+    [sourceNumberButton setTitle:_order.phoneNumber == [NSNull null] ? @"-" : [MapCharacter MapCharacter:_order.phoneNumber] forState:UIControlStateNormal];
+    [destinationNumberButton setTitle:_order.destinationPhoneNumber == [NSNull null] ? @"-" : [MapCharacter MapCharacter:_order.destinationPhoneNumber] forState:UIControlStateNormal];
+    
+    NSString *sourceAddressDetail = [NSString stringWithFormat:@"پلاک %@  زنگ یا واحد %@",_order.sourcePlate == [NSNull null] ? @"-" : [MapCharacter MapCharacter:_order.sourcePlate],_order.sourceBell== [NSNull null] ? @"-" :[MapCharacter MapCharacter:_order.sourceBell]];
+    sourceAddressDetailLabel.text = sourceAddressDetail;
+    
+    NSString *destinationAddressDetail = [NSString stringWithFormat:@"پلاک %@  زنگ یا واحد %@",_order.destinationPlate == [NSNull null] ? @"-" :[MapCharacter MapCharacter: _order.destinationPlate],_order.destinationBell== [NSNull null] ? @"-" :[MapCharacter MapCharacter:_order.destinationBell]];
+    destinationAddressDetailLabel.text = destinationAddressDetail;
+    
+    sourceFullNameLabel.text = _order.fullName == [NSNull null] ? @"-" : _order.fullName;
+    destinationFullNameLabel.text = _order.destinationFullName == [NSNull null] ? @"-" : _order.destinationFullName;
+    
+     if ([[NSString stringWithFormat:@"%@", _order.status] isEqualToString:@"7"] && !isAlertShown)
+    {
+        isAlertShown = YES;
+        
+        FCAlertView *alert = [[FCAlertView alloc] init];
+        [alert makeAlertTypeWarning];
+        [alert showAlertInView:self
+                     withTitle:nil
+                  withSubtitle:@"درخواست لغو شد"
+               withCustomImage:[UIImage imageNamed:@"alert.png"]
+           withDoneButtonTitle:@"تایید"
+                    andButtons:nil];
+        
+        [alert doneActionBlock:^{
+            [timer invalidate];
+            self.getData = nil;
+            [DataCollector sharedInstance].haveCurrentWork = NO;
+            [DataCollector sharedInstance].order = nil;
+            [self performSegueWithIdentifier:@"tomain" sender:self];
+        }];
+        
+        
     }
 }
 
@@ -277,6 +364,28 @@
     priceLabel.text = [NSString stringWithFormat:@"%@ تومان",[MapCharacter MapCharacter:formatted]];
      NSString *status =[NSString stringWithFormat:@"%@", _order.status];
     
+    sourceAddressLabelAccepted.text = _order.sourceAddress;
+    destinationAddressLabelAccepted.text = _order.destinationAddress;
+    
+    [sourceNumberButton setTitle:_order.phoneNumber == nil ? @"-" : [MapCharacter MapCharacter:_order.phoneNumber] forState:UIControlStateNormal];
+    [destinationNumberButton setTitle:_order.destinationPhoneNumber == [NSNull null] ? @"-" : [MapCharacter MapCharacter:_order.destinationPhoneNumber] forState:UIControlStateNormal];
+    
+    NSString *sourceAddressDetail = [NSString stringWithFormat:@"پلاک %@  زنگ یا واحد %@",_order.sourcePlate == [NSNull null] ? @"-" : [MapCharacter MapCharacter:_order.sourcePlate],_order.sourceBell== [NSNull null] ? @"-" :[MapCharacter MapCharacter:_order.sourceBell]];
+    sourceAddressDetailLabel.text = sourceAddressDetail;
+    
+    NSString *destinationAddressDetail = [NSString stringWithFormat:@"پلاک %@  زنگ یا واحد %@",_order.destinationPlate == [NSNull null] ? @"-" :[MapCharacter MapCharacter: _order.destinationPlate],_order.destinationBell== [NSNull null] ? @"-" :[MapCharacter MapCharacter:_order.destinationBell]];
+    destinationAddressDetailLabel.text = destinationAddressDetail;
+    
+    sourceFullNameLabel.text = _order.fullName == [NSNull null] ? @"-" : _order.fullName;
+    destinationFullNameLabel.text = _order.destinationFullName == [NSNull null] ? @"-" : _order.destinationFullName;
+    
+    if (_order.destinationPhoneNumber == [NSNull null]) {
+        destinationNumberButton.enabled = NO;
+    }
+    if (_order.phoneNumber == nil) {
+        sourceNumberButton.enabled = NO;
+    }
+    
     if ([status isEqualToString:@"3"]) {
         [arrivedAndDoneButton setTitle:@"رسیدن به گیرنده" forState:UIControlStateNormal];
     }
@@ -290,8 +399,6 @@
     if ([_order.payInDestination isEqualToString:@"1"]) {
         paymentLabel.text = @"هزینه را از دریافت کننده بگیرید";
     }
-    
-    
 }
 
 -(void)CreateShadow
@@ -301,6 +408,12 @@
     _mapView.layer.shadowOffset = CGSizeMake(1, 1);
     _mapView.layer.shadowOpacity = .7;
     _mapView.layer.masksToBounds = NO;
+    
+    toggleButton.layer.shadowColor = [UIColor darkGrayColor].CGColor;
+    toggleButton.layer.shadowRadius = 5;
+    toggleButton.layer.shadowOffset = CGSizeMake(1, 1);
+    toggleButton.layer.shadowOpacity = .7;
+    toggleButton.layer.masksToBounds = NO;
 }
 
 -(void)setupMapView {
@@ -353,6 +466,106 @@
     [mapView animateToCameraPosition:camera];
     
 }
+- (IBAction)ConfirmPerson:(id)sender {
+    [self ShowConfirmationAlert];
+}
+
+-(void)ShowConfirmationAlert
+{
+    FCAlertView *alert = [[FCAlertView alloc] init];
+    alert.blurBackground = 1;
+    alert.bounceAnimations = 1;
+    alert.dismissOnOutsideTouch = 1;
+    alert.fullCircleCustomImage = NO;
+    [alert makeAlertTypeCaution];
+    
+    [alert addTextFieldWithPlaceholder:@"----" andTextReturnBlock:^(NSString *text) {
+        
+    }];
+    
+    
+    [alert showAlertInView:self
+                 withTitle:@""
+              withSubtitle:@"لطفا کد دریافتی را وارد نمایید"
+           withCustomImage:[UIImage imageNamed:@"alert.png"]
+       withDoneButtonTitle:@"تایید"
+                andButtons:nil];
+    
+    [alert doneActionBlock:^{
+        
+        [self ConfirmNumber:alert.textField.text];
+        
+    }];
+}
+
+-(void)ConfirmNumber:(NSString*)code
+{
+    RequestCompleteBlock callback = ^(BOOL wasSuccessful,NSMutableDictionary *data) {
+         [self.view.window showHUDWithText:nil Type:ShowDismiss Enabled:YES];
+        if (wasSuccessful) {
+            
+            NSString *status = [NSString stringWithFormat:@"%@",data];
+            
+            if ([status isEqualToString:@"1"]) {
+                
+                [self.view.window showHUDWithText:nil Type:ShowDismiss Enabled:YES];
+                FCAlertView *alert = [[FCAlertView alloc] init];
+                [alert makeAlertTypeSuccess];
+                [alert showAlertInView:self
+                             withTitle:nil
+                          withSubtitle:@"کد وارد شده صحیح است"
+                       withCustomImage:[UIImage imageNamed:@"alert.png"]
+                   withDoneButtonTitle:@"تایید"
+                            andButtons:nil];
+            }
+            else
+            {
+                [self.view.window showHUDWithText:nil Type:ShowDismiss Enabled:YES];
+                FCAlertView *alert = [[FCAlertView alloc] init];
+                alert.blurBackground = 1;
+                alert.bounceAnimations = 1;
+                alert.dismissOnOutsideTouch = 1;
+                alert.fullCircleCustomImage = NO;
+                [alert makeAlertTypeWarning];
+                [alert addTextFieldWithPlaceholder:@"----" andTextReturnBlock:^(NSString *text) {
+                    
+                }];
+                
+                [alert showAlertInView:self
+                             withTitle:@"کد وارد شده اشتباه است"
+                          withSubtitle:@"لطفا کد دریافتی را وارد نمایید"
+                       withCustomImage:[UIImage imageNamed:@"alert.png"]
+                   withDoneButtonTitle:@"تایید"
+                            andButtons:nil];
+                
+                [alert doneActionBlock:^{
+                    [self ConfirmNumber:alert.textField.text];
+                    
+                }];
+                
+            }
+            
+        }
+        else
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"👻"
+                                                            message:@"لطفا ارتباط خود با اینترنت را بررسی نمایید."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"خب"
+                                                  otherButtonTitles:nil];
+            [alert show];
+        }
+    };
+    
+    Settings *st = [[Settings alloc]init];
+    
+    st = [DBManager selectSetting][0];
+    
+    [self.view.window showHUDWithText:@"لطفا صبر نمایید" Type:ShowLoading Enabled:YES];
+    [self.getData ConfirmNumber:st.accesstoken Code:code OrderId:_order.orderId withCallback:callback];
+}
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

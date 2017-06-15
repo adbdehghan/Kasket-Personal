@@ -11,6 +11,7 @@
 @interface HistoryTableViewCell : UITableViewCell
 @property (nonatomic, weak) IBOutlet UILabel *fullnameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *fullnameLabelDetail;
+@property (nonatomic, weak) IBOutlet UILabel *orderIdLabel;
 @property (nonatomic, weak) IBOutlet UILabel *dateTimeLabel;
 @property (nonatomic, weak) IBOutlet UILabel *dateTimeLabelDetail;
 @property (nonatomic, weak) IBOutlet UILabel *addressLabel;
@@ -29,4 +30,5 @@
 @property (nonatomic, weak) IBOutlet UIImageView *mapView;
 @property (nonatomic, weak) IBOutlet UIButton *emailButton;
 @property (nonatomic, weak) IBOutlet UIView *layerView;
+@property (nonatomic, weak) IBOutlet UIView *statusView;
 @end

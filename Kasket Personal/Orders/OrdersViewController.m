@@ -116,6 +116,17 @@
                 order.haveReturn =[item valueForKey:@"roundtrip"];
                 order.sourceAddress =[item valueForKey:@"sourceAddress"];
                 order.destinationAddress =[item valueForKey:@"destinationAddress"];
+                order.sourceBell =[item valueForKey:@"sourceBell"];
+                order.sourcePlate =[item valueForKey:@"sourceNum"];
+                order.destinationBell =[item valueForKey:@"destinationBell"];
+                order.destinationPlate =[item valueForKey:@"destinationNum"];
+                order.destinationFullName = [item valueForKey:@"destinationFullName"];
+                order.fullName = [item valueForKey:@"fullName"];
+                order.status =[item valueForKey:@"status"];
+                order.phoneNumber =[item valueForKey:@"phonenumber"];
+                order.destinationPhoneNumber = [item valueForKey:@"destinationPhoneNumber"];
+                order.paymentStatus =[NSString stringWithFormat:@"%@",[item valueForKey:@"paymentstatus"]];
+                order.payInDestination = [NSString stringWithFormat:@"%@",[item valueForKey:@"payinDestination"]];
                 NSDictionary *sourceLocation = [item valueForKey:@"sourcelocation"];
                 order.sourceLat = [sourceLocation valueForKey:@"latitude"];
                 order.sourceLon = [sourceLocation valueForKey:@"longitude"];
@@ -182,6 +193,7 @@
 
 -(void)viewDidDisappear:(BOOL)animated
 {
+    [super viewDidDisappear:YES];
     self.getData = nil;
     [timer invalidate];
 }

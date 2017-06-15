@@ -437,13 +437,15 @@ NSMutableDictionary *receivedData;
     }];
 }
 
-- (void)ConfirmNumber:(NSString*)token Code:(NSString*)code withCallback:(RequestCompleteBlock)callback
+- (void)ConfirmNumber:(NSString*)token Code:(NSString*)code OrderId:(NSString*)orderId withCallback:(RequestCompleteBlock)callback
 {
     receivedData = [[NSMutableDictionary alloc]init];
     
-    NSString *sample =[NSString stringWithFormat: @"%s/api/user/numberConfirmation",URLaddress];
+    NSString *sample =[NSString stringWithFormat: @"%s/api/employee/verifyReceiver",URLaddress];
     
-    NSDictionary *parameters = @{@"code": code};
+    NSDictionary *parameters = @{@"code": code,
+                                 @"orderid":orderId
+                                 };
     
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -471,7 +473,7 @@ NSMutableDictionary *receivedData;
 {
     receivedData = [[NSMutableDictionary alloc]init];
     
-    NSString *sample =[NSString stringWithFormat: @"%s/api/user/orderhistory",URLaddress];
+    NSString *sample =[NSString stringWithFormat: @"%s/api/employee/GetHistory",URLaddress];
     
     NSDictionary *parameters = @{@"page": page};
     
@@ -524,6 +526,8 @@ NSMutableDictionary *receivedData;
         NSLog(@"Failure %@, %@", error, operation.responseString);
     }];
 }
+
+
 
 - (void)Orders:(NSString*)token Page:(NSString*)page withCallback:(RequestCompleteBlock)callback
 {

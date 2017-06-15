@@ -15,6 +15,9 @@
 @property (nonatomic,strong) NSString *totalCarCleaned;
 @property (nonatomic,strong) NSString *rank;
 @property (nonatomic,strong) NSString *score;
+@property (nonatomic,strong) NSString *sumScore;
+@property (nonatomic,strong) NSString *totalOrder;
+@property (nonatomic,strong) NSString *totalCanceled;
 @property BOOL haveCurrentWork;
 @property BOOL accessible;
 @property (nonatomic,strong) NSString *phonenumber;

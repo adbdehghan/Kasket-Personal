@@ -11,6 +11,7 @@ target 'Kasket Personal' do
   pod 'IQKeyboardManager'
   pod 'AnimatedGIFImageSerialization'
   pod 'OHPDFImage'
+  pod 'NinaPagerView'
   # Pods for Kasket Personal
 
 end

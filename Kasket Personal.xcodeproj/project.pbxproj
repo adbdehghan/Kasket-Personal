@@ -12,7 +12,10 @@
 		3A01AC811EF1A5E6002A492A /* money.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A01AC801EF1A5E6002A492A /* money.png */; };
 		3A0D97C81EF1ACB600B74834 /* toggle.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A0D97C71EF1ACB600B74834 /* toggle.png */; };
 		3A5252F01EF0925D00350DCC /* sourcemarker.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3A5252EF1EF0925D00350DCC /* sourcemarker.pdf */; };
+		3A7932301EF2F1D100173BDB /* TPFloatRatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A79322F1EF2F1D100173BDB /* TPFloatRatingView.m */; };
 		3A901C8B1EF169C100ED290F /* credit-card.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A901C8A1EF169C100ED290F /* credit-card.png */; };
+		3AA8C0361EF2FD17004D7657 /* OrderTransactionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA8C0351EF2FD17004D7657 /* OrderTransactionsTableViewController.m */; };
+		3AA8C0391EF2FD2A004D7657 /* PersonalTransactionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA8C0381EF2FD2A004D7657 /* PersonalTransactionsTableViewController.m */; };
 		3ABEF7F71E9BD19500551B2D /* Order.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ABEF7F61E9BD19500551B2D /* Order.m */; };
 		3ADEEB601E9A589000CBC632 /* RadialGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ADEEB5F1E9A589000CBC632 /* RadialGradient.m */; };
 		3ADEEB641E9A5B5E00CBC632 /* InstagramActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ADEEB631E9A5B5E00CBC632 /* InstagramActivityIndicator.m */; };
@@ -153,7 +156,13 @@
 		3A01AC801EF1A5E6002A492A /* money.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money.png; sourceTree = "<group>"; };
 		3A0D97C71EF1ACB600B74834 /* toggle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toggle.png; sourceTree = "<group>"; };
 		3A5252EF1EF0925D00350DCC /* sourcemarker.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = sourcemarker.pdf; sourceTree = "<group>"; };
+		3A79322E1EF2F1D100173BDB /* TPFloatRatingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPFloatRatingView.h; sourceTree = "<group>"; };
+		3A79322F1EF2F1D100173BDB /* TPFloatRatingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPFloatRatingView.m; sourceTree = "<group>"; };
 		3A901C8A1EF169C100ED290F /* credit-card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "credit-card.png"; sourceTree = "<group>"; };
+		3AA8C0341EF2FD17004D7657 /* OrderTransactionsTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderTransactionsTableViewController.h; sourceTree = "<group>"; };
+		3AA8C0351EF2FD17004D7657 /* OrderTransactionsTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderTransactionsTableViewController.m; sourceTree = "<group>"; };
+		3AA8C0371EF2FD2A004D7657 /* PersonalTransactionsTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PersonalTransactionsTableViewController.h; sourceTree = "<group>"; };
+		3AA8C0381EF2FD2A004D7657 /* PersonalTransactionsTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PersonalTransactionsTableViewController.m; sourceTree = "<group>"; };
 		3ABEF7F51E9BD19500551B2D /* Order.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Order.h; sourceTree = "<group>"; };
 		3ABEF7F61E9BD19500551B2D /* Order.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Order.m; sourceTree = "<group>"; };
 		3ADEEB5E1E9A589000CBC632 /* RadialGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadialGradient.h; sourceTree = "<group>"; };
@@ -400,6 +409,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A79322D1EF2F1D100173BDB /* RatingStarControl */ = {
+			isa = PBXGroup;
+			children = (
+				3A79322E1EF2F1D100173BDB /* TPFloatRatingView.h */,
+				3A79322F1EF2F1D100173BDB /* TPFloatRatingView.m */,
+			);
+			path = RatingStarControl;
+			sourceTree = "<group>";
+		};
 		3ADEEB611E9A5B5E00CBC632 /* InstagramActivityIndicator */ = {
 			isa = PBXGroup;
 			children = (
@@ -441,6 +459,10 @@
 			children = (
 				6456DC781EA2D505008ECBF7 /* TransactionsTableViewController.h */,
 				6456DC791EA2D505008ECBF7 /* TransactionsTableViewController.m */,
+				3AA8C0341EF2FD17004D7657 /* OrderTransactionsTableViewController.h */,
+				3AA8C0351EF2FD17004D7657 /* OrderTransactionsTableViewController.m */,
+				3AA8C0371EF2FD2A004D7657 /* PersonalTransactionsTableViewController.h */,
+				3AA8C0381EF2FD2A004D7657 /* PersonalTransactionsTableViewController.m */,
 			);
 			path = Transactions;
 			sourceTree = "<group>";
@@ -457,6 +479,7 @@
 		645FAFD41E89CC7F008E0015 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				3A79322D1EF2F1D100173BDB /* RatingStarControl */,
 				3ADEEB611E9A5B5E00CBC632 /* InstagramActivityIndicator */,
 				645FAFD51E89CC7F008E0015 /* AFNetworking */,
 				645FAFE91E89CC7F008E0015 /* Classes */,
@@ -1126,6 +1149,7 @@
 				3ADEEB641E9A5B5E00CBC632 /* InstagramActivityIndicator.m in Sources */,
 				645FB11C1E89CC7F008E0015 /* iconCollectionTableViewCell.m in Sources */,
 				645FB0FA1E89CC7F008E0015 /* UIScrollView+UzysAnimatedGifLoadMore.m in Sources */,
+				3AA8C0361EF2FD17004D7657 /* OrderTransactionsTableViewController.m in Sources */,
 				3ADEEBF61E9E789600CBC632 /* OrderViewController.m in Sources */,
 				645FB0FE1E89CC7F008E0015 /* JCDHTTPConnection.m in Sources */,
 				645FB1041E89CC7F008E0015 /* Dot.m in Sources */,
@@ -1135,12 +1159,14 @@
 				645FB1111E89CC7F008E0015 /* UIImage+GIF.m in Sources */,
 				645FB0F81E89CC7F008E0015 /* SBJsonParser.m in Sources */,
 				645FB1021E89CC7F008E0015 /* AngleGradientLayer.m in Sources */,
+				3AA8C0391EF2FD2A004D7657 /* PersonalTransactionsTableViewController.m in Sources */,
 				6456DC7A1EA2D505008ECBF7 /* TransactionsTableViewController.m in Sources */,
 				6456DC6A1EA2964D008ECBF7 /* LocationManager.m in Sources */,
 				645FB0B61E89CC7F008E0015 /* Notification.m in Sources */,
 				643B29CF1E89601C00D1902B /* MainViewController.m in Sources */,
 				6456DC711EA2D4C1008ECBF7 /* SettingsViewController.m in Sources */,
 				645FB1001E89CC7F008E0015 /* MultiplePulsingHaloLayer.m in Sources */,
+				3A7932301EF2F1D100173BDB /* TPFloatRatingView.m in Sources */,
 				6456DC741EA2D4D0008ECBF7 /* MapViewController.m in Sources */,
 				64B7A96E1E6DFF7E00DF99DD /* main.m in Sources */,
 				64A25C551E89EB4A005DE1F7 /* SplashViewController.m in Sources */,

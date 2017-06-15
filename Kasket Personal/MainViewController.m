@@ -52,13 +52,18 @@
     self.accountContainer.layer.shadowOffset = CGSizeMake(1, 1);
     self.accountContainer.layer.shadowOpacity = .7;
     self.accountContainer.layer.masksToBounds = NO;
-    
-    
     [self setupCollectionViewData];
     [self setupLayout];
-
+    [self SetAccessibilitySwitch];
 }
 
+-(void)SetAccessibilitySwitch
+{
+    if ( [DataCollector sharedInstance].accessible ) {
+        [_accessibilitySwitch setOn:YES animated:NO];
+        self.accessibilityLabel.text = @"در دسترس";
+    }
+}
 
 -(void)OutOfReach
 {
@@ -151,13 +156,13 @@
 {
     switch (indexPath.row) {
         case 0:
-            
+            [self performSegueWithIdentifier:@"history" sender:self];
             break;
         case 1:
-            
+            [self performSegueWithIdentifier:@"transactions" sender:self];
             break;
         case 2:
-            
+            [self performSegueWithIdentifier:@"setting" sender:self];
             break;
         case 3:
             if (self.accessibilitySwitch.isOn) {
@@ -176,7 +181,7 @@
             }
             break;
         case 4:
-            
+            [self performSegueWithIdentifier:@"rank" sender:self];
             break;
         case 5:
             [self performSegueWithIdentifier:@"map" sender:self];

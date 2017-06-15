@@ -31,5 +31,7 @@
 @property (nonatomic,strong) NSString *employeeName;
 @property (nonatomic,strong) NSString *status;
 @property (nonatomic,strong) NSString *orderNumber;
+@property (nonatomic,strong) NSString *phoneNumber;
+@property (nonatomic,strong) NSString *fullName;
 
 @end
