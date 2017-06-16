@@ -7,8 +7,37 @@
 //
 
 #import "OrderTransactionsTableViewController.h"
+#import "DataDownloader.h"
+#import "Settings.h"
+#import "DBManager.h"
+#import "UIScrollView+UzysAnimatedGifLoadMore.h"
+#import "Transaction.h"
+#import "TransactionTableViewCell.h"
+#import "MapCharacter.h"
 
 @interface OrderTransactionsTableViewController ()
+{
+    NSMutableArray *tableItems;
+    UIActivityIndicatorView *activityIndicator;
+    UILabel *clearMessage;
+}
+@property (strong, nonatomic) DataDownloader *getData;
+@property (nonatomic, assign) int currentPage;
+@property (nonatomic, assign) NSInteger totalPages;
+@property (nonatomic, assign) BOOL isLoading;
+@property (nonatomic,assign) BOOL useActivityIndicator;
+@property (nonatomic, assign) NSInteger rowsCount;
+@end
+#define IS_IOS7 (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1 && floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1)
+#define IS_IOS8  ([[[UIDevice currentDevice] systemVersion] compare:@"8" options:NSNumericSearch] != NSOrderedAscending)
+#define IS_IPHONE6PLUS ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) && [[UIScreen mainScreen] nativeScale] == 3.0f)
+
+@implementation CALayer (Additions)
+
+- (void)setBorderColorFromUIColor:(UIColor *)color
+{
+    self.borderColor = color.CGColor;
+}
 
 @end
 
@@ -16,12 +45,166 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self CustomizeNavigationTitle];
+    [self InitialObjects];
+    if(IS_IOS7 || IS_IOS8)
+        self.automaticallyAdjustsScrollViewInsets = YES;
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+    clearMessage = [[UILabel alloc]initWithFrame:CGRectMake(0, self.view.center.y - 60, self.view.frame.size.width,30 )];
+    clearMessage.textColor=[UIColor grayColor];
+    clearMessage.backgroundColor =[UIColor clearColor];
+    clearMessage.font = [UIFont fontWithName:@"IRANSans" size:16];
+    clearMessage.textAlignment = NSTextAlignmentCenter;
+    clearMessage.text = @"هیج تراکنشی انجام نشده است";
+    clearMessage.alpha = 0;
+    [self.view addSubview:clearMessage];
+}
+
+-(void)InitialObjects
+{
+    tableItems = [[NSMutableArray alloc]init];
+    self.currentPage = 1;
+    self.totalPages = 1;
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [self.view addSubview:activityIndicator];
+    activityIndicator.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
+    [activityIndicator startAnimating];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.estimatedRowHeight = 80;
+    self.tableView.backgroundColor = [UIColor colorWithRed:255/255.f green:255/255.f blue:255/255.f alpha:1];
+    __weak typeof(self) weakSelf =self;
+    [self.tableView addLoadMoreActionHandler:^{
+        typeof(self) strongSelf = weakSelf;
+        
+            [strongSelf loadNextBatch];
+            
+    } ProgressImagesGifName:@"nevertoolate@2x.gif" LoadingImagesGifName:@"nevertoolate@2x.gif" ProgressScrollThreshold:30 LoadingImageFrameRate:30];
+    
+    _rowsCount = 0;
+}
+
+- (void)loadNextBatch {
+    self.isLoading =YES;
+    __weak typeof(self) weakSelf = self;
+    typeof(self) strongSelf = weakSelf;
+    
+    RequestCompleteBlock callback = ^(BOOL wasSuccessful,NSMutableDictionary *data) {
+        if (wasSuccessful) {
+            NSMutableArray *temp = [[NSMutableArray alloc]init];
+            data = [data valueForKey:@"data"];
+            for (NSDictionary *item in (NSMutableArray*)data) {
+                Transaction *transaction = [[Transaction alloc]init];
+                transaction.Amount = [item valueForKey:@"amount"];
+                transaction.Desc =[item valueForKey:@"description"];
+                transaction.Time =[item valueForKey:@"time"];
+                transaction.IsIncrease = [item valueForKey:@"transactionType"];
+                self.totalPages = [[item valueForKey:@"totalpage"] integerValue];
+                
+                [tableItems addObject:transaction];
+                [temp addObject:transaction];
+            }
+            
+            [activityIndicator stopAnimating];
+            
+            if (tableItems.count == 0) {
+                clearMessage.alpha = 1;
+            }
+            else
+                clearMessage.alpha = 0;
+            
+            NSInteger rows = [strongSelf.tableView numberOfRowsInSection:0];
+            
+            [strongSelf.tableView beginUpdates];
+            NSMutableArray *Indexpaths = [NSMutableArray array];
+            for (int i=0 ; i<temp.count ; i++) {
+                [Indexpaths addObject:[NSIndexPath indexPathForRow:rows+i inSection:0]];
+            }
+            
+            [strongSelf.tableView insertRowsAtIndexPaths:Indexpaths withRowAnimation:UITableViewRowAnimationAutomatic];
+            [strongSelf.tableView endUpdates];
+            
+            if (temp.count == 0) {
+                [strongSelf.tableView removeLoadMoreActionHandler];
+            }
+            
+            self.currentPage = self.currentPage +1 ;
+            
+            [strongSelf.tableView stopLoadMoreAnimation];
+            strongSelf.isLoading =NO;
+        }
+        
+        else
+        {
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"👻"
+                                                            message:@"لطفا ارتباط خود با اینترنت را بررسی نمایید."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"خب"
+                                                  otherButtonTitles:nil];
+            [alert show];
+            
+            
+            NSLog( @"Unable to fetch Data. Try again.");
+        }
+    };
+    
+    Settings *st = [[Settings alloc]init];
+    
+    st = [DBManager selectSetting][0];
+    
+    
+    [self.getData Transactions:st.accesstoken Page:[NSString stringWithFormat:@"%ld",(long)self.currentPage] PrivateAccount:@"False" withCallback:callback];
+    
+    
+}
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    //    Manually trigger
+    [self.tableView triggerLoadMoreActionHandler];
+}
+
+
+#pragma mark - Table view data source
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    // Return the number of sections.
+    return 1;
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
+    return tableItems.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *CellID = @"Cell";
+    TransactionTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellID];
+    if (!cell)
+        cell = [[TransactionTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellID];
+    
+    Transaction *item = [[Transaction alloc]init];
+    item = [tableItems objectAtIndex:indexPath.row];
+    
+    NSNumberFormatter *formatter = [NSNumberFormatter new];
+    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    NSString *formatted = [formatter stringFromNumber:[NSNumber numberWithInteger:[item.Amount integerValue]]];
+    cell.amountLabel.text =[NSString stringWithFormat:@"%@ تومان",[MapCharacter MapCharacter:formatted]];
+    cell.dateTimeLabel.text =[MapCharacter MapCharacter:item.Time];
+    cell.descLabel.text = item.Desc;
+    cell.statusLabel.text = [self ParseTransactionType:item.IsIncrease];
+    cell.backgroundColor = [UIColor clearColor];
+    
+    cell.containerView.layer.shadowOffset = CGSizeMake(0, 0);
+    cell.containerView.layer.shadowRadius = 2;
+    cell.containerView.layer.shadowOpacity = 0.15;
+    cell.containerView.layer.cornerRadius = 8;
+    
+    return cell;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -29,70 +212,53 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 0;
-}
-
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+-(void)CustomizeNavigationTitle
+{
+    UILabel* label=[[UILabel alloc] initWithFrame:CGRectMake(0,0, self.navigationItem.titleView.frame.size.width, 40)];
+    label.text=@"گردش حساب";
+    label.textColor=[UIColor whiteColor];
+    label.backgroundColor =[UIColor clearColor];
+    label.adjustsFontSizeToFitWidth=YES;
+    label.font = [UIFont fontWithName:@"IRANSans" size:17];
+    label.textAlignment = NSTextAlignmentCenter;
     
-    // Configure the cell...
+    self.navigationItem.titleView=label;
     
-    return cell;
+    // Get the previous view controller
+    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    // Create a UIBarButtonItem
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(popViewController)];
+    // Associate the barButtonItem to the previous view
+    //    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    
+    
 }
-*/
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+-(NSString*)ParseTransactionType:(NSString*)transactionType
+{
+    switch ([transactionType integerValue]) {
+        case 2:
+            return @"واریز به کارت";
+        case 0:
+            return @"افزایش اعتبار";
+        case 3:
+            return @"پرداخت درگاه";
+        case 1:
+            return @"کاهش اعتبار";
+        case 4:
+            return @"کاهش اعتبار";
+    }
+    return @"نا معلوم";
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+- (DataDownloader *)getData
+{
+    if (!_getData) {
+        self.getData = [[DataDownloader alloc] init];
+    }
+    
+    return _getData;
 }
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

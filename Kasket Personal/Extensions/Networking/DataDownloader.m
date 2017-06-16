@@ -498,13 +498,13 @@ NSMutableDictionary *receivedData;
     }];
 }
 
-- (void)Transactions:(NSString*)token Page:(NSString*)page withCallback:(RequestCompleteBlock)callback
+- (void)Transactions:(NSString*)token Page:(NSString*)page PrivateAccount:(NSString*)privateAccount withCallback:(RequestCompleteBlock)callback
 {
     receivedData = [[NSMutableDictionary alloc]init];
     
-    NSString *sample =[NSString stringWithFormat: @"%s/api/register/ClientTransactions",URLaddress];
+    NSString *sample =[NSString stringWithFormat: @"%s/api/employee/GetTransactionHistory",URLaddress];
     
-    NSDictionary *parameters = @{@"page": page};
+    NSDictionary *parameters = @{@"page": page ,@"privateAccount":privateAccount};
     
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];

@@ -21,19 +21,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self CustomizeNavigationBar];
+    self.edgesForExtendedLayout = UIRectEdgeNone;
     [self.view addSubview:self.ninaPagerView];
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 #pragma mark - NinaParaArrays
 - (NSArray *)ninaTitleArray {
     return @[
-             @"تراکنش های سفارشات",
-             @"تراکنش های شخصی"
+ @"تراکنش های شخصی",
+             @"تراکنش های سفارشات"
              ];
 }
 

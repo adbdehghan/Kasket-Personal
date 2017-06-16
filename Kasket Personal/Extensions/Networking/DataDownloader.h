@@ -55,7 +55,7 @@ typedef void (^ImageRequestCompleteBlock) (BOOL wasSuccessful,UIImage *image);
 
 - (void)OrderHistory:(NSString*)token Page:(NSString*)page withCallback:(RequestCompleteBlock)callback;
 
-- (void)Transactions:(NSString*)token Page:(NSString*)page withCallback:(RequestCompleteBlock)callback;
+- (void)Transactions:(NSString*)token Page:(NSString*)page PrivateAccount:(NSString*)privateAccount withCallback:(RequestCompleteBlock)callback;
 
 - (void)Orders:(NSString*)token Page:(NSString*)page withCallback:(RequestCompleteBlock)callback;
 
