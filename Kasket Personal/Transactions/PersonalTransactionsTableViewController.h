@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PersonalTransactionsTableViewController : UITableViewController
-
+@interface PersonalTransactionsTableViewController : UIViewController
+@property (nonatomic,strong) IBOutlet UITableView *tableView;
 @end

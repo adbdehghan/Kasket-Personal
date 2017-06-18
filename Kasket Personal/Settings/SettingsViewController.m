@@ -17,6 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self CustomizeNavigationTitle];
+    aboutTextView.font = [UIFont fontWithName:@"IRANSans" size:15];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -27,7 +28,7 @@
 -(void)CustomizeNavigationTitle
 {
     UILabel* label=[[UILabel alloc] initWithFrame:CGRectMake(0,0, self.navigationItem.titleView.frame.size.width, 40)];
-    label.text=@"نتظیمات";
+    label.text=@"درباره کاسکت";
     label.textColor=[UIColor whiteColor];
     label.backgroundColor =[UIColor clearColor];
     label.adjustsFontSizeToFitWidth=YES;

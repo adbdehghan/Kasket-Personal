@@ -40,6 +40,10 @@
     NSString *formatted = [formatter stringFromNumber:[NSNumber numberWithInteger:[[DataCollector sharedInstance].account integerValue]]];
     
     self.accountLabel.text = [NSString stringWithFormat:@"%@ تومان",[MapCharacter MapCharacter:formatted]];
+    
+    NSString *privateFormatted = [formatter stringFromNumber:[NSNumber numberWithInteger:[[DataCollector sharedInstance].privateAccount integerValue]]];
+    self.privateAccountLabel.text = [NSString stringWithFormat:@"%@ تومان",[MapCharacter MapCharacter:privateFormatted]];
+    
     [self setNeedsStatusBarAppearanceUpdate];
     self.accessibilityContainer.layer.shadowColor = [UIColor darkGrayColor].CGColor;
     self.accessibilityContainer.layer.shadowRadius = 5;
@@ -106,7 +110,7 @@
     temp = @[@"history.png",@"transactions.png",@"settings.png",@"orders.png",@"rank.png",@"map.png"];
     _objects = [NSArray arrayWithArray:temp];
     
-    _textObjects = @[@"تاریخچه سفارشات",@"گردش مالی",@"تنظیمات",@"درخواست ها",@"رتبه و امتیاز",@"نقشه"];
+    _textObjects = @[@"تاریخچه سفارشات",@"گردش مالی",@"درباره کاسکت",@"درخواست ها",@"رتبه و امتیاز",@"نقشه"];
 }
 
 

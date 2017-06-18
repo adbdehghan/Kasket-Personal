@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface SettingsViewController : UIViewController
-
+{
+    IBOutlet UITextView *aboutTextView;
+}
 @end

@@ -24,6 +24,8 @@
 		3ADEEBAE1E9E6CB500CBC632 /* box.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ADEEBAD1E9E6CB500CBC632 /* box.png */; };
 		3ADEEBF31E9E6E4E00CBC632 /* way.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ADEEBF21E9E6E4E00CBC632 /* way.png */; };
 		3ADEEBF61E9E789600CBC632 /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ADEEBF51E9E789600CBC632 /* OrderViewController.m */; };
+		3AE0FE441EF6868D00F15AD5 /* ArenaLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AE0FE421EF6868D00F15AD5 /* ArenaLogo.png */; };
+		3AE0FE451EF6868D00F15AD5 /* logo (3) copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AE0FE431EF6868D00F15AD5 /* logo (3) copy.png */; };
 		643B29CF1E89601C00D1902B /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 643B29CE1E89601C00D1902B /* MainViewController.m */; };
 		6456DC6A1EA2964D008ECBF7 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6456DC691EA2964D008ECBF7 /* LocationManager.m */; };
 		6456DC711EA2D4C1008ECBF7 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6456DC701EA2D4C1008ECBF7 /* SettingsViewController.m */; };
@@ -175,6 +177,8 @@
 		3ADEEBF21E9E6E4E00CBC632 /* way.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = way.png; sourceTree = "<group>"; };
 		3ADEEBF41E9E789600CBC632 /* OrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderViewController.h; sourceTree = "<group>"; };
 		3ADEEBF51E9E789600CBC632 /* OrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderViewController.m; sourceTree = "<group>"; };
+		3AE0FE421EF6868D00F15AD5 /* ArenaLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ArenaLogo.png; sourceTree = "<group>"; };
+		3AE0FE431EF6868D00F15AD5 /* logo (3) copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo (3) copy.png"; sourceTree = "<group>"; };
 		643B29CD1E89601C00D1902B /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		643B29CE1E89601C00D1902B /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		6456DC681EA2964D008ECBF7 /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationManager.h; sourceTree = "<group>"; };
@@ -618,6 +622,8 @@
 		645FB01D1E89CC7F008E0015 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				3AE0FE421EF6868D00F15AD5 /* ArenaLogo.png */,
+				3AE0FE431EF6868D00F15AD5 /* logo (3) copy.png */,
 				3A0D97C71EF1ACB600B74834 /* toggle.png */,
 				3A01AC801EF1A5E6002A492A /* money.png */,
 				3A01AC7E1EF1A597002A492A /* status.png */,
@@ -979,6 +985,7 @@
 				645FB0F11E89CC7F008E0015 /* teh.png in Resources */,
 				64A25C4B1E89E06C005DE1F7 /* settings.png in Resources */,
 				645FB0F31E89CC7F008E0015 /* user-shape.png in Resources */,
+				3AE0FE451EF6868D00F15AD5 /* logo (3) copy.png in Resources */,
 				645FB0EA1E89CC7F008E0015 /* position.png in Resources */,
 				645FB0D11E89CC7F008E0015 /* arc.png in Resources */,
 				645FB0E51E89CC7F008E0015 /* Myself.pdf in Resources */,
@@ -999,6 +1006,7 @@
 				645FB0FC1E89CC7F008E0015 /* MapStyle.json in Resources */,
 				64A25C4E1E89E06C005DE1F7 /* history.png in Resources */,
 				64B7A97C1E6DFF7E00DF99DD /* LaunchScreen.storyboard in Resources */,
+				3AE0FE441EF6868D00F15AD5 /* ArenaLogo.png in Resources */,
 				64A25C491E89E06C005DE1F7 /* transactions.png in Resources */,
 				645FB1261E89D8B6008E0015 /* moneyBag.png in Resources */,
 				64A25C4C1E89E06C005DE1F7 /* orders.png in Resources */,

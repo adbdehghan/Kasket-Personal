@@ -22,6 +22,7 @@
 @property BOOL accessible;
 @property (nonatomic,strong) NSString *phonenumber;
 @property (nonatomic,strong) NSString *account;
+@property (nonatomic,strong) NSString *privateAccount;
 @property (nonatomic,strong) NSString *version;
 @property (nonatomic,strong) NSString *image;
 @property (nonatomic,strong) NSString *accountnumber;

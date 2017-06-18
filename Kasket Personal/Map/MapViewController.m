@@ -78,7 +78,11 @@
     circ.strokeColor = [UIColor clearColor];
     circ.strokeWidth = 1;
     circ.map = mapView;
-
+    
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:coordinate.latitude
+                                                            longitude:coordinate.longitude
+                                                                 zoom:14.0];
+    [mapView animateToCameraPosition:camera];
 }
 
 - (void)didReceiveMemoryWarning {

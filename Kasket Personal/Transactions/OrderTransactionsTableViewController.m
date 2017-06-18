@@ -20,6 +20,7 @@
     NSMutableArray *tableItems;
     UIActivityIndicatorView *activityIndicator;
     UILabel *clearMessage;
+    NSString *credit;
 }
 @property (strong, nonatomic) DataDownloader *getData;
 @property (nonatomic, assign) int currentPage;
@@ -58,6 +59,10 @@
     clearMessage.text = @"هیج تراکنشی انجام نشده است";
     clearMessage.alpha = 0;
     [self.view addSubview:clearMessage];
+    
+    UIView *header = [[UIView alloc]initWithFrame:CGRectMake(70, 120, 50, 30)];
+    header.backgroundColor = [UIColor blackColor];
+    [self.tableView.superview addSubview:header];
 }
 
 -(void)InitialObjects
@@ -92,6 +97,7 @@
     RequestCompleteBlock callback = ^(BOOL wasSuccessful,NSMutableDictionary *data) {
         if (wasSuccessful) {
             NSMutableArray *temp = [[NSMutableArray alloc]init];
+            credit = [data valueForKey:@"account"];
             data = [data valueForKey:@"data"];
             for (NSDictionary *item in (NSMutableArray*)data) {
                 Transaction *transaction = [[Transaction alloc]init];

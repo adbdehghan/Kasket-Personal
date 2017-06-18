@@ -15,5 +15,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *accessibilityLabel;
 @property (weak, nonatomic) IBOutlet UIView *accountContainer;
 @property (weak, nonatomic) IBOutlet UILabel *accountLabel;
+@property (weak, nonatomic) IBOutlet UILabel *privateAccountLabel;
 
 @end

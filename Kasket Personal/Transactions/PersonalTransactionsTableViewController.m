@@ -14,12 +14,15 @@
 #import "Transaction.h"
 #import "TransactionTableViewCell.h"
 #import "MapCharacter.h"
+#import "FCAlertView.h"
 
 @interface PersonalTransactionsTableViewController ()
 {
     NSMutableArray *tableItems;
     UIActivityIndicatorView *activityIndicator;
     UILabel *clearMessage;
+    NSString *credit;
+    IBOutlet UIButton *raiseCredit;
 }
 @property (strong, nonatomic) DataDownloader *getData;
 @property (nonatomic, assign) int currentPage;
@@ -57,6 +60,14 @@
     clearMessage.text = @"هیج تراکنشی انجام نشده است";
     clearMessage.alpha = 0;
     [self.view addSubview:clearMessage];
+    
+    raiseCredit.layer.cornerRadius = raiseCredit.frame.size.height/2;
+    raiseCredit.layer.shadowColor = [UIColor darkGrayColor].CGColor;
+    raiseCredit.layer.shadowRadius = 5;
+    raiseCredit.layer.shadowOffset = CGSizeMake(1, 1);
+    raiseCredit.layer.shadowOpacity = .7;
+    raiseCredit.layer.masksToBounds = NO;
+    
 }
 
 -(void)InitialObjects
@@ -91,6 +102,7 @@
     RequestCompleteBlock callback = ^(BOOL wasSuccessful,NSMutableDictionary *data) {
         if (wasSuccessful) {
             NSMutableArray *temp = [[NSMutableArray alloc]init];
+            credit = [data valueForKey:@"privateAccount"];
             data = [data valueForKey:@"data"];
             for (NSDictionary *item in (NSMutableArray*)data) {
                 Transaction *transaction = [[Transaction alloc]init];
@@ -204,6 +216,44 @@
     return cell;
 }
 
+- (IBAction)RaiseCreditEvent:(id)sender
+{
+    
+    Settings *st = [[Settings alloc]init];
+    
+    st = [DBManager selectSetting][0];
+    
+    FCAlertView *alert = [[FCAlertView alloc] init];
+    alert.blurBackground = 1;
+    alert.bounceAnimations = 1;
+    alert.dismissOnOutsideTouch = 1;
+    alert.fullCircleCustomImage = NO;
+    [alert makeAlertTypeSuccess];
+    
+    [alert addTextFieldWithPlaceholder:@"-----" andTextReturnBlock:^(NSString *text) {
+        
+    }];
+    
+    
+    [alert showAlertInView:self
+                 withTitle:@""
+              withSubtitle:@"مبلغ مورد نظر را وارد نمایید"
+           withCustomImage:[UIImage imageNamed:@"alert.png"]
+       withDoneButtonTitle:@"تایید"
+                andButtons:nil];
+    
+    [alert doneActionBlock:^{
+        
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://kaskett.ir/payment/pay?amount=%@&phoneNumber=%@",alert.textField.text,st.settingId ]];
+        
+        if (![[UIApplication sharedApplication] openURL:url]) {
+            NSLog(@"%@%@",@"Failed to open url:",[url description]);
+        }
+        
+    }];
+    
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -212,15 +262,6 @@
 
 -(void)CustomizeNavigationTitle
 {
-    UILabel* label=[[UILabel alloc] initWithFrame:CGRectMake(0,0, self.navigationItem.titleView.frame.size.width, 40)];
-    label.text=@"گردش حساب";
-    label.textColor=[UIColor whiteColor];
-    label.backgroundColor =[UIColor clearColor];
-    label.adjustsFontSizeToFitWidth=YES;
-    label.font = [UIFont fontWithName:@"IRANSans" size:17];
-    label.textAlignment = NSTextAlignmentCenter;
-    
-    self.navigationItem.titleView=label;
     
     // Get the previous view controller
     UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
@@ -228,7 +269,7 @@
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(popViewController)];
     // Associate the barButtonItem to the previous view
     //    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    
+    UIButton *settingButton =  [UIButton buttonWithType:UIButtonTypeCustom];
     
 }
 

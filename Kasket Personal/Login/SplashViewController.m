@@ -170,6 +170,7 @@
     [DataCollector sharedInstance].score = [NSString stringWithFormat:@"%@",[data valueForKey:@"score"]];
     [DataCollector sharedInstance].phonenumber = [data valueForKey:@"phonenumber"];
     [DataCollector sharedInstance].account = [NSString stringWithFormat:@"%@",[data valueForKey:@"account"]];
+    [DataCollector sharedInstance].privateAccount = [NSString stringWithFormat:@"%@",[data valueForKey:@"privateAccount"]];
     [DataCollector sharedInstance].version = [data valueForKey:@"version"];
     [DataCollector sharedInstance].image = [data valueForKey:@"image"];
     [DataCollector sharedInstance].accountnumber = [data valueForKey:@"accountnumber"];
