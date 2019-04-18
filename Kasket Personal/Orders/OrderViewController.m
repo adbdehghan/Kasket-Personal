@@ -176,7 +176,8 @@
         if (wasSuccessful) {
             
             NSString *status =[NSString stringWithFormat:@"%@",[data valueForKey:@"status"] ];
-            if ([status isEqualToString:@"0"]) {
+            if ([status isEqualToString:@"0"])
+            {
                 FCAlertView *alert = [[FCAlertView alloc] init];
                 [alert makeAlertTypeCaution];
                 [alert showAlertInView:self
@@ -213,14 +214,6 @@
             }
             else if ([status isEqualToString:@"6"])
             {
-//                FCAlertView *alert = [[FCAlertView alloc] init];
-//                [alert makeAlertTypeCaution];
-//                [alert showAlertInView:self
-//                             withTitle:nil
-//                          withSubtitle:@"درخواست لغو شد"
-//                       withCustomImage:[UIImage imageNamed:@"alert.png"]
-//                   withDoneButtonTitle:@"تایید"
-//                            andButtons:nil];
                 [timer invalidate];
                  self.getData = nil;
                 [DataCollector sharedInstance].haveCurrentWork = NO;

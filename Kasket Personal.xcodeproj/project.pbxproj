@@ -953,7 +953,7 @@
 				TargetAttributes = {
 					64B7A9681E6DFF7E00DF99DD = {
 						CreatedOnToolsVersion = 8.3;
-						DevelopmentTeam = 2Y3WDQ97KT;
+						DevelopmentTeam = D5G8SK67F3;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1303,7 +1303,7 @@
 			baseConfigurationReference = 9FAAA3F194E6BEC6BF49908C /* Pods-Kasket Personal.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 2Y3WDQ97KT;
+				DEVELOPMENT_TEAM = D5G8SK67F3;
 				GCC_PREFIX_HEADER = "Kasket Personal/SCCaptureCameraDemo-Prefix.pch";
 				INFOPLIST_FILE = "Kasket Personal/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
@@ -1318,7 +1318,7 @@
 			baseConfigurationReference = B61B480B40016A315FA311BE /* Pods-Kasket Personal.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 2Y3WDQ97KT;
+				DEVELOPMENT_TEAM = D5G8SK67F3;
 				GCC_PREFIX_HEADER = "Kasket Personal/SCCaptureCameraDemo-Prefix.pch";
 				INFOPLIST_FILE = "Kasket Personal/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
